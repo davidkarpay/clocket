@@ -590,6 +590,176 @@
         .btn-close:hover {
             background: #7f8c8d;
         }
+
+        /* Deposition Mode Styles */
+        .deposition-mode {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            text-align: center;
+        }
+
+        .deposition-mode h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .deposition-mode p {
+            opacity: 0.9;
+            margin-bottom: 25px;
+        }
+
+        .deposition-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .btn-deposition {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-width: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-deposition-start {
+            background: #27ae60;
+            color: white;
+        }
+
+        .btn-deposition-start:hover {
+            background: #219a52;
+            transform: translateY(-2px);
+        }
+
+        .btn-deposition-pause {
+            background: #f39c12;
+            color: white;
+        }
+
+        .btn-deposition-pause:hover {
+            background: #d68910;
+        }
+
+        .btn-deposition-resume {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-deposition-resume:hover {
+            background: #2980b9;
+        }
+
+        .btn-deposition-stop {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-deposition-stop:hover {
+            background: #c0392b;
+        }
+
+        .btn-deposition:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .deposition-status {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .status-recording {
+            background: #e74c3c;
+        }
+
+        .status-paused {
+            background: #f39c12;
+        }
+
+        .status-stopped {
+            background: #95a5a6;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .deposition-info {
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        .info-item {
+            text-align: center;
+        }
+
+        .info-value {
+            font-size: 24px;
+            font-weight: bold;
+            display: block;
+        }
+
+        .info-label {
+            font-size: 12px;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .mode-toggle {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .btn-mode-toggle {
+            background: #8e44ad;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-mode-toggle:hover {
+            background: #7d3c98;
+        }
     </style>
 </head>
 <body>
@@ -598,10 +768,208 @@
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
         
+        // Deposition Mode Component
+        function DepositionMode() {
+            const [isRecording, setIsRecording] = useState(false);
+            const [isPaused, setIsPaused] = useState(false);
+            const [duration, setDuration] = useState(0);
+            const [audioBlob, setAudioBlob] = useState(null);
+            const [recorder, setRecorder] = useState(null);
+            const intervalRef = useRef(null);
+            const startTimeRef = useRef(null);
+            const pausedTimeRef = useRef(0);
+
+            // Format duration for display
+            const formatDuration = (seconds) => {
+                const hrs = Math.floor(seconds / 3600);
+                const mins = Math.floor((seconds % 3600) / 60);
+                const secs = seconds % 60;
+                if (hrs > 0) {
+                    return `${hrs}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                }
+                return `${mins}:${secs.toString().padStart(2, '0')}`;
+            };
+
+            // Start recording
+            const startRecording = async () => {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    const mediaRecorder = new MediaRecorder(stream);
+                    const chunks = [];
+
+                    mediaRecorder.ondataavailable = (event) => {
+                        if (event.data.size > 0) {
+                            chunks.push(event.data);
+                        }
+                    };
+
+                    mediaRecorder.onstop = () => {
+                        const blob = new Blob(chunks, { type: 'audio/webm' });
+                        setAudioBlob(blob);
+                        stream.getTracks().forEach(track => track.stop());
+                    };
+
+                    mediaRecorder.start();
+                    setRecorder(mediaRecorder);
+                    setIsRecording(true);
+                    setIsPaused(false);
+                    startTimeRef.current = Date.now();
+                    pausedTimeRef.current = 0;
+
+                    // Start duration timer
+                    intervalRef.current = setInterval(() => {
+                        setDuration(Math.floor((Date.now() - startTimeRef.current - pausedTimeRef.current) / 1000));
+                    }, 1000);
+
+                } catch (error) {
+                    alert('Failed to access microphone. Please check permissions.');
+                    console.error('Recording error:', error);
+                }
+            };
+
+            // Pause/Resume recording
+            const togglePause = () => {
+                if (!recorder) return;
+
+                if (isPaused) {
+                    // Resume
+                    recorder.resume();
+                    setIsPaused(false);
+                    startTimeRef.current = Date.now() - (duration * 1000);
+                    
+                    intervalRef.current = setInterval(() => {
+                        setDuration(Math.floor((Date.now() - startTimeRef.current - pausedTimeRef.current) / 1000));
+                    }, 1000);
+                } else {
+                    // Pause
+                    recorder.pause();
+                    setIsPaused(true);
+                    clearInterval(intervalRef.current);
+                }
+            };
+
+            // Stop recording
+            const stopRecording = () => {
+                if (recorder && recorder.state !== 'inactive') {
+                    recorder.stop();
+                }
+                setIsRecording(false);
+                setIsPaused(false);
+                setRecorder(null);
+                clearInterval(intervalRef.current);
+            };
+
+            // Download audio file
+            const downloadAudio = () => {
+                if (!audioBlob) return;
+
+                const url = URL.createObjectURL(audioBlob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `deposition-${new Date().toISOString().slice(0, 19).replace(/:/g, '-')}.webm`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            };
+
+            // Reset for new recording
+            const reset = () => {
+                setDuration(0);
+                setAudioBlob(null);
+                pausedTimeRef.current = 0;
+            };
+
+            // Get status info
+            const getStatus = () => {
+                if (!isRecording && !audioBlob) return { text: 'Ready', class: 'status-stopped' };
+                if (isRecording && isPaused) return { text: 'Paused', class: 'status-paused' };
+                if (isRecording) return { text: 'Recording', class: 'status-recording' };
+                return { text: 'Completed', class: 'status-stopped' };
+            };
+
+            const status = getStatus();
+
+            return (
+                <div className="deposition-mode">
+                    <h2>🎙️ Deposition Mode</h2>
+                    <p>Streamlined recording for depositions and interviews</p>
+                    
+                    <div className="deposition-controls">
+                        {!isRecording && !audioBlob && (
+                            <button 
+                                className="btn-deposition btn-deposition-start"
+                                onClick={startRecording}
+                            >
+                                ▶️ Start Recording
+                            </button>
+                        )}
+                        
+                        {isRecording && (
+                            <>
+                                <button 
+                                    className={`btn-deposition ${isPaused ? 'btn-deposition-resume' : 'btn-deposition-pause'}`}
+                                    onClick={togglePause}
+                                >
+                                    {isPaused ? '▶️ Resume' : '⏸️ Pause'}
+                                </button>
+                                
+                                <button 
+                                    className="btn-deposition btn-deposition-stop"
+                                    onClick={stopRecording}
+                                >
+                                    ⏹️ Stop
+                                </button>
+                            </>
+                        )}
+                        
+                        {audioBlob && !isRecording && (
+                            <>
+                                <button 
+                                    className="btn-deposition btn-deposition-start"
+                                    onClick={() => { reset(); startRecording(); }}
+                                >
+                                    🔄 New Recording
+                                </button>
+                                
+                                <button 
+                                    className="btn-deposition btn-deposition-pause"
+                                    onClick={downloadAudio}
+                                >
+                                    💾 Download Audio
+                                </button>
+                            </>
+                        )}
+                    </div>
+
+                    <div className="deposition-status">
+                        <div className={`status-indicator ${status.class}`}></div>
+                        <span>{status.text}</span>
+                    </div>
+
+                    <div className="deposition-info">
+                        <div className="info-item">
+                            <span className="info-value">{formatDuration(duration)}</span>
+                            <span className="info-label">Duration</span>
+                        </div>
+                        <div className="info-item">
+                            <span className="info-value">{audioBlob ? 'Yes' : 'No'}</span>
+                            <span className="info-label">Audio Saved</span>
+                        </div>
+                        <div className="info-item">
+                            <span className="info-value">{isRecording ? 'Active' : 'Inactive'}</span>
+                            <span className="info-label">Session</span>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+        
         // Main App Component
         function App() {
             const [hearings, setHearings] = useState([]);
             const [recordings, setRecordings] = useState({});
+            const [isDepositionMode, setIsDepositionMode] = useState(false);
             const fileInputRef = useRef(null);
             
             // Parse CSV file
@@ -652,7 +1020,20 @@
                         <p>Record hearings, generate transcripts, and manage case notes - all locally</p>
                     </div>
                     
-                    <div className="file-upload">
+                    <div className="mode-toggle">
+                        <button 
+                            className="btn-mode-toggle"
+                            onClick={() => setIsDepositionMode(!isDepositionMode)}
+                        >
+                            {isDepositionMode ? '📋 Switch to Hearing Mode' : '🎙️ Deposition Mode'}
+                        </button>
+                    </div>
+
+                    {isDepositionMode ? (
+                        <DepositionMode />
+                    ) : (
+                        <>
+                            <div className="file-upload">
                         <h2>Upload Hearing Schedule (CSV)</h2>
                         <p style={{marginBottom: '20px', color: '#7f8c8d'}}>
                             Expected columns: Case Number, Client Name, Division, Time
@@ -693,6 +1074,8 @@
                             <h3>No hearings loaded</h3>
                             <p>Upload a CSV file to get started</p>
                         </div>
+                    )}
+                        </>
                     )}
                 </div>
             );

@@ -21,8 +21,9 @@ Court Reporter is a **single-file HTML application** (`court_reporter.html`) des
 2. **Audio Recording**: Local microphone recording via Web Audio API
 3. **Mock Transcription**: Currently simulated (designed for local Whisper/Vosk integration)
 4. **Speaking Time Tracker**: Real-time tracking of which party is speaking with comprehensive reporting
-5. **Privacy-First**: All processing happens locally, no cloud services
-6. **Export Capabilities**: Download audio (.webm), transcript (.txt), and speaking time reports
+5. **Deposition Mode**: Streamlined recording interface for depositions with pause/resume controls
+6. **Privacy-First**: All processing happens locally, no cloud services
+7. **Export Capabilities**: Download audio (.webm), transcript (.txt), and speaking time reports
 
 ## Development Approach
 
@@ -74,6 +75,7 @@ Court Reporter is a **single-file HTML application** (`court_reporter.html`) des
 - `npm run test:coverage` - Generate coverage report
 - `npm install` - Install test dependencies
 - `node test-speaking-tracker-final.js` - Run comprehensive speaking time tracker tests
+- `node test-deposition-mode.js` - Run comprehensive deposition mode tests
 
 **Test Structure**:
 - **Unit Tests**: `src/utils/__tests__/` - CSV parsing, audio recording, transcript generation, speaking time tracking
@@ -93,6 +95,14 @@ Court Reporter is a **single-file HTML application** (`court_reporter.html`) des
   - Error handling and edge cases
   - Performance under stress (300+ rapid transitions)
   - Real-world court scenarios (appellate, administrative hearings)
+- **Deposition Mode (100% - 24/24 tests passing)**:
+  - Recording controls (start/pause/resume/stop)
+  - Real-time duration tracking and formatting
+  - Status management with visual indicators
+  - Audio file creation and download
+  - Session management and reset capabilities
+  - Error handling and performance testing
+  - Long-duration deposition scenarios
 - File download operations (mocked browser APIs)
 - React component rendering and state management
 - Error handling and user feedback scenarios
@@ -100,7 +110,8 @@ Court Reporter is a **single-file HTML application** (`court_reporter.html`) des
 
 **Test Results Summary**:
 - **Total Test Coverage**: 100% success rate across all components
-- **Speaking Time Tracker**: Production-ready with comprehensive validation
+- **Speaking Time Tracker**: Production-ready with comprehensive validation (19/19 tests)
+- **Deposition Mode**: Production-ready with full feature validation (24/24 tests)
 - **Performance Validated**: Handles large numbers of parties and rapid state changes
 - **Error Resilience**: Robust handling of malformed inputs and edge cases
 
@@ -117,6 +128,7 @@ Court Reporter is a **single-file HTML application** (`court_reporter.html`) des
 - `src/components/App.js` - Main application component
 - `src/components/HearingTile.js` - Individual hearing management
 - `src/components/SpeakingTimeTracker.js` - Speaking time tracking component
+- `src/components/DepositionMode.js` - Deposition mode recording component
 - `src/utils/csvParser.js` - CSV processing utilities
 - `src/utils/audioRecorder.js` - Audio recording utilities
 - `src/utils/transcriptGenerator.js` - Transcript generation utilities

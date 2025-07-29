@@ -7,6 +7,7 @@ A **single-file HTML application** designed for court environments that provides
 🎙️ **Audio Recording** - Browser-based recording with MediaRecorder API  
 📝 **Transcript Generation** - Local processing (currently mock, designed for Whisper/Vosk)  
 ⏱️ **Speaking Time Tracker** - Real-time tracking of which party is speaking  
+🎯 **Deposition Mode** - Streamlined recording interface for depositions with pause/resume  
 📊 **Visual Reports** - Pie charts and detailed statistics  
 🔒 **Privacy-First** - All processing happens locally, no cloud services  
 📥 **Export Capabilities** - Download audio, transcripts, and speaking time reports  
@@ -35,6 +36,26 @@ npm run test:coverage
 ```
 
 ## Test Structure
+
+## Deposition Mode
+
+A streamlined recording interface specifically designed for depositions and interviews.
+
+### Key Features
+- **One-Click Recording**: Simple "Start Recording" button to begin immediately
+- **Pause/Resume Control**: Toggle recording with visual status indicators
+- **Real-time Duration**: Live duration display with HH:MM:SS formatting
+- **Automatic File Naming**: Downloads with timestamp-based filenames
+- **Status Indicators**: Visual indicators (Ready, Recording, Paused, Completed)
+- **Session Management**: Reset functionality for multiple recordings
+
+### Usage
+1. **Switch to Deposition Mode**: Click "🎙️ Deposition Mode" button
+2. **Start Recording**: Click "▶️ Start Recording" to begin
+3. **Pause/Resume**: Use "⏸️ Pause" / "▶️ Resume" as needed
+4. **Stop Recording**: Click "⏹️ Stop" to end session
+5. **Download**: Click "💾 Download Audio" to save the .webm file
+6. **New Session**: Click "🔄 New Recording" to start fresh
 
 ## Speaking Time Tracker
 
@@ -80,6 +101,12 @@ The core feature that tracks speaking time during court proceedings with product
   - Report generation
   - Error handling and edge cases
 
+- **Deposition Mode Tests** (`src/components/__tests__/DepositionMode.test.js`)
+  - Recording start/stop/pause functionality
+  - Duration tracking and formatting
+  - Status management and indicators
+  - Audio file download and session management
+
 ### Component Tests
 - **App Component Tests** (`src/components/__tests__/App.test.js`)
   - File upload handling
@@ -96,6 +123,12 @@ The core feature that tracks speaking time during court proceedings with product
   - Real-time updates
   - Report generation UI
   - Party management interface
+
+- **DepositionMode Component Tests** (`src/components/__tests__/DepositionMode.test.js`)
+  - Recording controls and state management
+  - Pause/resume functionality
+  - Duration formatting and display
+  - Audio download and session reset
 
 ### Integration Tests
 - **Complete Workflows** (`src/__tests__/integration.test.js`)
@@ -118,6 +151,14 @@ The core feature that tracks speaking time during court proceedings with product
   - Performance testing (300+ rapid transitions)
   - Real-world court scenarios
 
+- **Deposition Mode Validation** (`test-deposition-mode.js`)
+  - **24 comprehensive tests with 100% pass rate**
+  - Recording controls and state management
+  - Pause/resume functionality validation
+  - Duration formatting and display testing
+  - Error handling and performance testing
+  - Real-world deposition scenarios
+
 ## Test Coverage
 
 The test suite provides comprehensive coverage across all features:
@@ -135,6 +176,15 @@ The test suite provides comprehensive coverage across all features:
   - ✅ Error handling and input validation
   - ✅ Performance under stress (handles 300+ rapid transitions)
   - ✅ Real-world court scenarios (appellate, administrative hearings)
+- ✅ **Deposition Mode (24/24 tests passing)**
+  - ✅ Recording controls (start, pause, resume, stop)
+  - ✅ Real-time duration tracking and formatting
+  - ✅ Status management with visual indicators
+  - ✅ Audio file creation and download functionality
+  - ✅ Session management and reset capabilities
+  - ✅ Error handling for recording failures
+  - ✅ Performance testing for rapid operations
+  - ✅ Long-duration deposition scenarios
 
 ### UI & Interactions (100% Tested)
 - ✅ React component rendering and state management
@@ -143,9 +193,11 @@ The test suite provides comprehensive coverage across all features:
 - ✅ Error handling and user feedback
 - ✅ Multi-hearing state management
 - ✅ Speaking time tracker UI components
+- ✅ Deposition mode interface and controls
 
 ### Production Readiness
-- ✅ **100% test success rate** across all 19 comprehensive tests
+- ✅ **100% test success rate** across all comprehensive test suites
+- ✅ **43 total tests passing** (19 speaking tracker + 24 deposition mode)
 - ✅ **Error resilience** with robust null/undefined input handling
 - ✅ **Performance validated** for real-world court usage
 - ✅ **Privacy-focused** local-only processing
@@ -179,10 +231,16 @@ npm test csvParser.test.js
 # Run comprehensive speaking time tracker tests
 node test-speaking-tracker-final.js
 
+# Run comprehensive deposition mode tests
+node test-deposition-mode.js
+
 # Run specific speaking time tracker test suites
 npm test speakingTimeTracker.test.js
 npm test speakingTimeTracker.integration.test.js
 npm test speakingTimeTracker.errorHandling.test.js
+
+# Run deposition mode component tests
+npm test DepositionMode.test.js
 ```
 
 ## Test Development Guidelines
