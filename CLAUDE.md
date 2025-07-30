@@ -74,8 +74,19 @@ Court Reporter is a **single-file HTML application** (`court_reporter.html`) des
 - `npm run test:watch` - Run tests in watch mode  
 - `npm run test:coverage` - Generate coverage report
 - `npm install` - Install test dependencies
-- `node test-speaking-tracker-final.js` - Run comprehensive speaking time tracker tests
-- `node test-deposition-mode.js` - Run comprehensive deposition mode tests
+
+**Comprehensive Test Runners**:
+- `node test-speaking-tracker-final.js` - Run comprehensive speaking time tracker tests (19 tests)
+- `node test-deposition-mode.js` - Run comprehensive deposition mode tests (24 tests)
+- `node run-tests.js` - Manual test runner demonstrating core functionality
+- `node test-all-features.js` - Complete feature validation suite
+- `node test-workflow.js` - End-to-end workflow testing
+
+**Specific Test Commands**:
+- `npm test -- --testPathPattern="utils"` - Run unit tests only
+- `npm test -- --testPathPattern="components"` - Run component tests only
+- `npm test -- --testPathPattern="integration"` - Run integration tests only
+- `npm test csvParser.test.js` - Run specific test file
 
 **Test Structure**:
 - **Unit Tests**: `src/utils/__tests__/` - CSV parsing, audio recording, transcript generation, speaking time tracking
