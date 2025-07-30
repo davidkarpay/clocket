@@ -18,12 +18,13 @@ Court Reporter is a **single-file HTML application** (`index.html`) designed as 
 ## Key Features
 
 1. **CSV Import**: Expects columns: Case Number, Client Name, Division, Time
-2. **Audio Recording**: Local microphone recording via Web Audio API
-3. **Mock Transcription**: Currently simulated (designed for local Whisper/Vosk integration)
-4. **Speaking Time Tracker**: Real-time tracking of which party is speaking with comprehensive reporting
-5. **Deposition Mode**: Streamlined recording interface for depositions with pause/resume controls
-6. **Privacy-First**: All processing happens locally, no cloud services
-7. **Export Capabilities**: Download audio (.webm), transcript (.txt), and speaking time reports
+2. **Manual Case Entry**: Direct input form for case details without CSV requirement  
+3. **Audio Recording**: Local microphone recording via Web Audio API
+4. **Mock Transcription**: Currently simulated (designed for local Whisper/Vosk integration)
+5. **Speaking Time Tracker**: Real-time tracking of which party is speaking with comprehensive reporting
+6. **Deposition Mode**: Streamlined recording interface for depositions with pause/resume controls
+7. **Privacy-First**: All processing happens locally, no cloud services
+8. **Export Capabilities**: Download audio (.webm), transcript (.txt), and speaking time reports
 
 ## Development Approach
 

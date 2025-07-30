@@ -8,6 +8,7 @@ A **single-file HTML application** designed for court environments that provides
 📝 **Transcript Generation** - Local processing (currently mock, designed for Whisper/Vosk)  
 ⏱️ **Speaking Time Tracker** - Real-time tracking of which party is speaking  
 🎯 **Deposition Mode** - Streamlined recording interface for depositions with pause/resume  
+✏️ **Manual Case Entry** - Add cases directly without CSV upload using a simple form  
 📊 **Visual Reports** - Pie charts and detailed statistics  
 🔒 **Privacy-First** - All processing happens locally, no cloud services  
 📥 **Export Capabilities** - Download audio, transcripts, and speaking time reports  
@@ -70,7 +71,7 @@ The core feature that tracks speaking time during court proceedings with product
 - **Export Options**: Save reports as text files with full hearing details
 
 ### Usage Workflow
-1. **Import Hearings**: Upload CSV with columns: Case Number, Client Name, Division, Time
+1. **Import Hearings**: Upload CSV with columns: Case Number, Client Name, Division, Time OR add cases manually using the input form
 2. **Start Tracking**: Click party buttons to track who is speaking
 3. **Real-time Updates**: See time accumulation and current speaker status
 4. **Add Parties**: Dynamically add witnesses, attorneys, or other participants
