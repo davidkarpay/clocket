@@ -15,7 +15,7 @@ A **single-file HTML application** designed for court environments that provides
 ## Quick Start
 
 ### Using the Application
-Simply open `court_reporter.html` in a modern web browser. No installation required!
+Simply open `index.html` in a modern web browser or visit https://davidkarpay.github.io/clocket/ to use the live version. No installation required!
 
 ### Development & Testing
 ```bash
@@ -257,7 +257,7 @@ When adding new tests:
 ## Architecture & Technical Details
 
 ### Single-File Design
-- **Main Application**: `court_reporter.html` - Complete standalone application
+- **Main Application**: `index.html` - Complete standalone application
 - **No Dependencies**: Runs offline once loaded, uses CDN for React and Chart.js
 - **Local Processing**: All audio, transcripts, and timing data processed locally
 - **Privacy-First**: No external API calls or data transmission

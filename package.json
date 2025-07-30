@@ -2,7 +2,7 @@
   "name": "court-reporter",
   "version": "1.0.0",
   "description": "Privacy-focused court hearing recording and transcription tool",
-  "main": "court_reporter.html",
+  "main": "index.html",
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Court Reporter is a **single-file HTML application** (`court_reporter.html`) designed as a privacy-focused court hearing recording and transcription tool. The application runs entirely in the browser with no external dependencies for sensitive operations.
+Court Reporter is a **single-file HTML application** (`index.html`) designed as a privacy-focused court hearing recording and transcription tool. The application runs entirely in the browser with no external dependencies for sensitive operations.
 
 ## Architecture
 
@@ -27,7 +27,7 @@ Court Reporter is a **single-file HTML application** (`court_reporter.html`) des
 
 ## Development Approach
 
-- **Single File Structure**: Original code exists in `court_reporter.html`
+- **Single File Structure**: Original code exists in `index.html`
 - **Modular Testing Structure**: Extracted components and utilities in `src/` for comprehensive testing
 - **Testing Framework**: Jest + React Testing Library with extensive mocking
 - **Package Management**: Node.js project with npm for test dependencies
@@ -40,7 +40,7 @@ Court Reporter is a **single-file HTML application** (`court_reporter.html`) des
 - MediaRecorder creates .webm audio blobs
 - Real-time duration tracking during recording
 
-**Speaking Time Tracker** (court_reporter.html:701-1098):
+**Speaking Time Tracker** (index.html:701-1098):
 - Real-time tracking of which party is speaking during proceedings
 - Default parties: State, Defense, Court (customizable)
 - Stopwatch functionality with seamless speaker transitions
@@ -49,7 +49,7 @@ Court Reporter is a **single-file HTML application** (`court_reporter.html`) des
 - Text report generation with detailed timeline
 - Data persistence integrated with hearing records
 
-**Transcript System** (court_reporter.html:465-483):
+**Transcript System** (index.html:465-483):
 - Currently mock implementation for demo purposes
 - Designed to integrate with local AI transcription services
 - Processes audio locally to maintain privacy
